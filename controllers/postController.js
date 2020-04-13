@@ -12,30 +12,34 @@ exports.index = async (req, res) => {
   //   console.log(error);
   //   res.send({code: -1, msg: '查询失败'})
   // }
-  const data = await PostModel.find()
-  res.send({ code: 0, msg: '查询成功', data })
+  // 获取前端传递过来的分页的数据 pageNum、pageSize
+  const pageNum = parseInt(req.query.pageNum) || 1  // 查询页码
+  const pageSize = parseInt(req.query.pageSize) || 2    // 每页条数
+  const title = req.query.title  // 获取前端传递过来的搜索的数据 title
+  const data = await PostModel.find({ title: new RegExp(title)})
+    .skip((pageNum-1) * pageSize)
+    .limit(pageSize)
+  const total = await PostModel.find({title: new RegExp(title)}).countDocuments()
+  // 总页数  传给前端
+  const totalPage = Math.ceil( total / pageSize)
+  
+  res.send({ code: 0, msg: '查询成功', data: {list: data, totalPage: totalPage} })
 }
 
-//创建
+//帖子详情
+exports.show = async (req, res) => {
+  // 获取 用户传来的 请求体
+  const { id } = req.params
+  console.log(id);
+
+  const data = await PostModel.findOne({ _id: id })
+  res.send({ code: 0, msg: 'Ok', data })
+}
+
+//创建帖子
 exports.create = async (req, res) => {
   // 获取 用户传来的 请求体
   const { title, content } = req.body
-
-  // PostModel
-  //   .create({ title, content })
-  //   .then(() => {
-  //     res.send({
-  //       code: 0,
-  //       msg: '成功'
-  //     })
-  //   })
-  //   .catch((err)=> {
-  //     console.log(err);
-  //     res.send({
-  //       code: -1,
-  //       msg: '失败'
-  //     })
-  //   })
 
   await PostModel.create({ title, content })
   res.send({ code: 0, msg: '创建成功' })
@@ -43,7 +47,7 @@ exports.create = async (req, res) => {
 
 //更新
 exports.update = async (req, res) => {
-  // 获取 更新的帖子 id
+  // 获取帖子 id
   const { id } = req.params
   await PostModel.updateOne({ _id: id }, req.body)
   res.send({ code: 0, msg: '更新成功' })
