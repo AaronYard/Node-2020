@@ -1,4 +1,4 @@
-// post 路由文件
+// 帖子 路由文件
 const express = require('express')
 
 // 创建路由实例

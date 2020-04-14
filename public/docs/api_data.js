@@ -80,7 +80,7 @@ define({ "api": [
     "name": "GetHttpLocalhost3000Posts"
   },
   {
-    "type": "post",
+    "type": "get",
     "url": "http://localhost:3000/posts/:id",
     "title": "帖子详情",
     "group": "帖子",
@@ -114,7 +114,7 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "routers/postRouter.js",
     "groupTitle": "帖子",
-    "name": "PostHttpLocalhost3000PostsId"
+    "name": "GetHttpLocalhost3000PostsId"
   },
   {
     "type": "post",
@@ -245,5 +245,105 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "routers/postRouter.js",
     "groupTitle": "帖子"
+  },
+  {
+    "type": "post",
+    "url": "http://localhost:3000/login",
+    "title": "用户登录",
+    "group": "用户",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>用户邮箱</p>"
+          },
+          {
+            "group": "body",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>用户密码</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>状态码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>消息.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routers/userRouter.js",
+    "groupTitle": "用户",
+    "name": "PostHttpLocalhost3000Login"
+  },
+  {
+    "type": "post",
+    "url": "http://localhost:3000/register",
+    "title": "用户注册",
+    "group": "用户",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>用户邮箱</p>"
+          },
+          {
+            "group": "body",
+            "type": "String",
+            "optional": false,
+            "field": "password",
+            "description": "<p>用户密码</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>状态码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>消息.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routers/userRouter.js",
+    "groupTitle": "用户",
+    "name": "PostHttpLocalhost3000Register"
   }
 ] });

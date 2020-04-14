@@ -28,7 +28,7 @@ exports.index = async (req, res) => {
 
 //帖子详情
 exports.show = async (req, res) => {
-  // 获取 用户传来的 请求体
+  // 获取 用户传来的帖子 id
   const { id } = req.params
   console.log(id);
 

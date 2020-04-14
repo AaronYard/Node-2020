@@ -5,6 +5,7 @@ require('express-async-errors')
 
 // 引入 抽离的路由文件
 const postRouter = require('./routers/postRouter')
+const userRouter = require('./routers/userRouter')
 
 // 1. req.body 中间件
 app.use(express.json())
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.static('./public'))
 // 3. 调用路由文件，并设置前缀
 app.use('/posts', postRouter)
+app.use(userRouter)
 // 4. 去掉路由中 try,catch， 统一错误处理
 app.use(function (err, req, res, next) {
   console.error(err)
