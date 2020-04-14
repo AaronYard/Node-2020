@@ -139,6 +139,15 @@ define({ "api": [
             "field": "content",
             "description": "<p>帖子内容</p>"
           }
+        ],
+        "Headers": [
+          {
+            "group": "Headers",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token信息</p>"
+          }
         ]
       }
     },
@@ -287,6 +296,13 @@ define({ "api": [
             "optional": false,
             "field": "msg",
             "description": "<p>消息.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token.</p>"
           }
         ]
       }

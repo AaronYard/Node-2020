@@ -1,5 +1,6 @@
 // 帖子 路由文件
 const express = require('express')
+const auth = require('../middlewares/auth')  // 引入 权限验证（token)中间件
 
 // 创建路由实例
 const router = express.Router()
@@ -40,11 +41,12 @@ router.get('/:id', show)
  * 
  * @apiParam {String} title 帖子标题
  * @apiParam {String} content 帖子内容
+ * @apiParam (Headers) {String} token token信息
  *
  * @apiSuccess {Number} code 状态码.
  * @apiSuccess {String} msg  消息.
  */
-router.post('/', create)
+router.post('/', auth, create)
 
 /**
  * @api {put} http://localhost:3000/posts:id 编辑帖子
@@ -53,20 +55,23 @@ router.post('/', create)
  *
  * @apiParam {String} title 帖子标题
  * @apiParam {String} content 帖子内容
+ * @apiParam (Headers) {String} token token信息
  *
  * @apiSuccess {Number} code 状态码.
  * @apiSuccess {String} msg  消息.
  */
-router.put('/:id', update)
+router.put('/:id', auth, update)
 
 /**
  * @api {delete} http://localhost:3000/posts:id 删除帖子
  * @apiName  remove
  * @apiGroup 帖子
+ * 
+ * @apiParam (Headers) {String} token token信息
  *
  * @apiSuccess {Number} code 状态码.
  * @apiSuccess {String} msg  消息.
  */
-router.delete('/:id', remove)
+router.delete('/:id', auth, remove)
 
 module.exports = router

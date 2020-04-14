@@ -1,4 +1,5 @@
-const UserModel = require('../models/userModel')
+const UserModel = require('../models/userModel')   // 引入用户模型
+const jsonwebtoken = require('jsonwebtoken')  // 生成 token
 
 // 注册
 exports.register = async (req, res) => {
@@ -28,8 +29,12 @@ exports.login = async (req, res) => {
   // 验证密码是否正确 bcryptjs(使用文档上实例化的方法)
   if (!data.comparePassword(password)) {
     res.send({code: -1, msg:'用户密码错误'})
-  } else {
-    res.send({code: 0, msg: '登录成功'})
-  }
-  
+    return
+  } 
+  // 用户可以登录， 生成 token（参数为 token信息，密钥，失效时间）
+  const token = jsonwebtoken.sign({
+    userId: data._id,
+    nickname: data.nickname
+  }, 'mygod', {expiresIn: '2h'})
+  res.send({code: 0, msg: '登录成功', token})
 }

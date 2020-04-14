@@ -1,7 +1,7 @@
 // 控制器，暴露一系列中间件方法给到帖子的路由去使用
-
 // 引入 帖子模型
 const PostModel = require('../models/PostModel')
+const jsonwebtoken = require('jsonwebtoken')
 
 // 查询帖子
 exports.index = async (req, res) => {
@@ -16,14 +16,14 @@ exports.index = async (req, res) => {
   const pageNum = parseInt(req.query.pageNum) || 1  // 查询页码
   const pageSize = parseInt(req.query.pageSize) || 2    // 每页条数
   const title = req.query.title  // 获取前端传递过来的搜索的数据 title
-  const data = await PostModel.find({ title: new RegExp(title)})
-    .skip((pageNum-1) * pageSize)
+  const data = await PostModel.find({ title: new RegExp(title) })
+    .skip((pageNum - 1) * pageSize)
     .limit(pageSize)
-  const total = await PostModel.find({title: new RegExp(title)}).countDocuments()
+  const total = await PostModel.find({ title: new RegExp(title) }).countDocuments()
   // 总页数  传给前端
-  const totalPage = Math.ceil( total / pageSize)
-  
-  res.send({ code: 0, msg: '查询成功', data: {list: data, totalPage: totalPage} })
+  const totalPage = Math.ceil(total / pageSize)
+
+  res.send({ code: 0, msg: '查询成功', data: { list: data, totalPage: totalPage } })
 }
 
 //帖子详情
@@ -38,10 +38,29 @@ exports.show = async (req, res) => {
 
 //创建帖子
 exports.create = async (req, res) => {
-  // 获取 用户传来的 请求体
-  const { title, content } = req.body
+  //   // 从请求头中拿到用户传递过来的 token
+  //   const token = req.get('authorization')
+  //   if (token) {
+  //     jsonwebtoken.verify(token, 'mygod', async (err, data) => {
+  //       if (err) {
+  //         res.status(401).send('身份验证失败')
+  //       } else {
+  //         // 获取 用户传来的 请求体
+  //         const { title, content } = req.body
+  //         await PostModel.create({ title, content })
+  //         res.send({ code: 0, msg: '创建成功' })
+  //       }
+  //     })
+  //   } else {
+  //     res.status(401).send('请携带token')
+  //   }
+  // }
 
-  await PostModel.create({ title, content })
+  // 获取 auth中间件中 新增在 req的token ，从中拿到 userId
+  const {userId} = req.auth
+  req.body.userId = userId
+  // req.body中包含 userId, 用户传递的 title, content，发送请求
+  await PostModel.create(req.body)
   res.send({ code: 0, msg: '创建成功' })
 }
 
