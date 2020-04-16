@@ -24,13 +24,13 @@ const { index, create, update, remove, show } = require('../controllers/postCont
  */
 router.get('/', index)
 
-/**
+/** 
  * @api {get} http://localhost:3000/posts/:id 帖子详情
  * @apiGroup 帖子
  * 
  * @apiSuccess {Number} code 状态码.
  * @apiSuccess {String} msg  消息.
- * @apiSuccess {Object} data 更新完成后的帖子信息.
+ * @apiSuccess {Object} data 查询完成后的帖子信息.
  */
 router.get('/:id', show) 
 
@@ -59,6 +59,7 @@ router.post('/', auth, create)
  *
  * @apiSuccess {Number} code 状态码.
  * @apiSuccess {String} msg  消息.
+ * @apiSuccess {Object} data 更新完成后的帖子信息.
  */
 router.put('/:id', auth, update)
 

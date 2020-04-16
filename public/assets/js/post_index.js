@@ -9,13 +9,14 @@ $(function () {
   // 定义一个 getData 的方法专门去发送 ajax 请求获取数据
   function getData() {
     $.get(
-      "/posts",
+      "http://localhost:3000/posts",
       {
         pageNum: pageNum,
         pageSize: pageSize,
         title: searchTitle
       },
       function (res) {
+        console.log(res);
         // 判断 res.code 是否等于0
         if (res.code === 0) {
           // 列表数据
@@ -32,6 +33,9 @@ $(function () {
             ).format("YYYY-MM-DD hh:mm:ss")}</small>
             </div>
             <div class="font-weight-light text-truncate">${item.content}</div>
+            <div class="mt-2 text-black-50">
+              <small>${item.userId.nickname}</small>
+            </div>
           </li>
         `;
           });
@@ -48,19 +52,19 @@ $(function () {
           class="page-item"
           data-page="${pageNum > 1 ? pageNum - 1 : 1}"
           >
-          <a class="page-link" href="javascript:;">上一页</a>
+          <a class="page-link" href="javascript:;">Prev</a>
         </li>
       `;
           // 循环计算出页码 totalPage 是个数字，不能使用 forEach 但是可以通过普通的 for 循环去处理
           for (var i = 0; i < totalPage; i++) {
             pageHtml += `
-              <li 
-                data-page="${i + 1}" 
-                class="page-item ${i + 1 === pageNum ? "active" : ""}"
-                >
-                <a class="page-link" href="javascript:;">${i + 1}</a>
-              </li>
-            `;
+          <li 
+            data-page="${i + 1}" 
+            class="page-item ${i + 1 === pageNum ? "active" : ""}"
+            >
+            <a class="page-link" href="javascript:;">${i + 1}</a>
+          </li>
+        `;
           }
           // 下一页
           pageHtml += `
@@ -68,7 +72,7 @@ $(function () {
           class="page-item"
           data-page="${pageNum < totalPage ? pageNum + 1 : totalPage}"
           >
-          <a class="page-link" href="javascript:;">下一页</a>
+          <a class="page-link" href="javascript:;">Next</a>
         </li>
       `;
           // 写入页面中
@@ -81,8 +85,7 @@ $(function () {
   // 默认获取一次数据，也就是默认调用一次 getData
   getData();
 
-  // 监听分页按钮的点击事件 
-  // 需要使用事件委托的方法，去找一个默认在页面上就存在的元素
+  // 绑定分页事件
   $(".pagination").on("click", ".page-item", function () {
     // 获取 toPage
     var toPage = $(this).data("page");

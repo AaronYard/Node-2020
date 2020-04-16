@@ -106,7 +106,7 @@ define({ "api": [
             "type": "Object",
             "optional": false,
             "field": "data",
-            "description": "<p>更新完成后的帖子信息.</p>"
+            "description": "<p>查询完成后的帖子信息.</p>"
           }
         ]
       }
@@ -181,6 +181,19 @@ define({ "api": [
     "title": "删除帖子",
     "name": "remove",
     "group": "帖子",
+    "parameter": {
+      "fields": {
+        "Headers": [
+          {
+            "group": "Headers",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token信息</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -228,6 +241,15 @@ define({ "api": [
             "field": "content",
             "description": "<p>帖子内容</p>"
           }
+        ],
+        "Headers": [
+          {
+            "group": "Headers",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>token信息</p>"
+          }
         ]
       }
     },
@@ -247,6 +269,13 @@ define({ "api": [
             "optional": false,
             "field": "msg",
             "description": "<p>消息.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>更新完成后的帖子信息.</p>"
           }
         ]
       }
@@ -254,6 +283,56 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "routers/postRouter.js",
     "groupTitle": "帖子"
+  },
+  {
+    "type": "get",
+    "url": "http://localhost:3000/getInfo",
+    "title": "登录用户基本信息",
+    "group": "用户",
+    "parameter": {
+      "fields": {
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>token信息</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>状态码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>消息.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>当前用户基本信息.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routers/userRouter.js",
+    "groupTitle": "用户",
+    "name": "GetHttpLocalhost3000Getinfo"
   },
   {
     "type": "post",
@@ -361,5 +440,64 @@ define({ "api": [
     "filename": "routers/userRouter.js",
     "groupTitle": "用户",
     "name": "PostHttpLocalhost3000Register"
+  },
+  {
+    "type": "put",
+    "url": "http://localhost:3000/users/update",
+    "title": "修改当前用户基本信息",
+    "group": "用户",
+    "parameter": {
+      "fields": {
+        "body": [
+          {
+            "group": "body",
+            "type": "Object",
+            "optional": false,
+            "field": "avatar",
+            "description": "<p>用户头像</p>"
+          }
+        ],
+        "Header": [
+          {
+            "group": "Header",
+            "type": "String",
+            "optional": false,
+            "field": "Authorization",
+            "description": "<p>token信息</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "code",
+            "description": "<p>状态码.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "msg",
+            "description": "<p>消息.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>update修改之后的当前用户基本信息.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "routers/userRouter.js",
+    "groupTitle": "用户",
+    "name": "PutHttpLocalhost3000UsersUpdate"
   }
 ] });

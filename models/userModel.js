@@ -15,7 +15,8 @@ const userSchema = new mongoose.Schema({
     }
   },
   password: { type: String, required: true },
-  nickname: { type: String, default: '' }
+  nickname: { type: String, default: '' },
+  avatar: { type: String, default: 'http://localhost:3000/assets/img/avatar.png'}
 }, {
   timestamps: true
 })

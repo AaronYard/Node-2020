@@ -5,18 +5,16 @@ const jsonwebtoken = require('jsonwebtoken')
 
 // 查询帖子
 exports.index = async (req, res) => {
-  // try {
-  //   const data =  await PostModel.find()
-  //   res.send({code: 0, msg: '查询成功', data})
-  // } catch (error) {
-  //   console.log(error);
-  //   res.send({code: -1, msg: '查询失败'})
-  // }
+  
   // 获取前端传递过来的分页的数据 pageNum、pageSize
   const pageNum = parseInt(req.query.pageNum) || 1  // 查询页码
   const pageSize = parseInt(req.query.pageSize) || 2    // 每页条数
   const title = req.query.title  // 获取前端传递过来的搜索的数据 title
-  const data = await PostModel.find({ title: new RegExp(title) })
+  /**
+   * 通过正则来模糊查询，实现搜索功能，（不传 title 时，正则返回true, 表示查所有）
+   * 填充: populate(字段名, 该字段名对应的这条数据中的字段), 接受的 userId 是 PostModel 的 schema 中定义的一个字段名字
+   */
+  const data = await PostModel.find({ title: new RegExp(title) }).populate('userId', ['nickname', 'email'])
     .skip((pageNum - 1) * pageSize)
     .limit(pageSize)
   const total = await PostModel.find({ title: new RegExp(title) }).countDocuments()
@@ -32,7 +30,7 @@ exports.show = async (req, res) => {
   const { id } = req.params
   console.log(id);
 
-  const data = await PostModel.findOne({ _id: id })
+  const data = await PostModel.findOne({ _id: id }).populate('userId', ['nickname', 'email'])
   res.send({ code: 0, msg: 'Ok', data })
 }
 
@@ -68,8 +66,8 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   // 获取帖子 id
   const { id } = req.params
-  await PostModel.updateOne({ _id: id }, req.body)
-  res.send({ code: 0, msg: '更新成功' })
+  const data = await PostModel.updateOne({ _id: id }, req.body)
+  res.send({ code: 0, msg: '更新成功', data })
 }
 
 //删除
